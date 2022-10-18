@@ -1,5 +1,6 @@
 from cProfile import label
 from cmath import log
+import collections
 import math
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing as mp
@@ -111,10 +112,11 @@ class Funct(object):
         self.mae = np.mean(np.abs(tar-test))
         return self.mae
     
-    def addTest(self, test):
-        if test:
-            self.test = test
+    def addTest(self, tar):
+        if tar:
+            self.target = tar
             self.fitness_mae()
+            
             
 def checkFloat(str):
         try:
@@ -158,7 +160,7 @@ def randomSearch(truthNode):
     bestFunc = None
     itr_perf = []
     bestFitness = []
-    iter = int(1e7)
+    iter = int(1e3)
     depth = 4
    
     for i in range(iter):
@@ -173,28 +175,32 @@ def randomSearch(truthNode):
         elif tree.fitness_mae()<bestFitness[-1]:
             bestFitness.append(tree.fitness_mae())
             itr_perf.append(i)
-            bestFunc = tree           
+            bestFunc = tree
+    if (not itr_perf[-1] == i-1):
+        bestFitness.append(bestFitness[-1])
+        itr_perf.append(i-1)
     return [bestFitness[-1], bestFunc], bestFitness, itr_perf
 
-# def initPopulation(depth, popsize = 1000): 
-#     popFunc= [randomFunc(depth) for i in range(popsize)]
-#     nodeList = [functTree(node) for node in popFunc]
-#     tree = [Funct(x) for x in nodeList]
-#     return tree
+def initPopulation(depth, popsize = 1000): 
+    popFunc= [randomFunc(depth) for i in range(popsize)]
+    nodeList = [functTree(node) for node in popFunc]
+    tree = [Funct(x) for x in nodeList]
+    return tree
 
-# def calculateFit(test, pop):
-#     popFit = []
-#     popSorted = {}
+def calculateGAFit(test, pop):
+    popFit = []  
     
-#     for func in pop:
-#         fit = func.addTest(test)
-#         popSorted[fit] = func
-
-# def GA(test):
-#     depth = 4
-#     popTree = initPopulation(depth)
-    
-#     return popTree
+    for func in pop:
+        fit = func.addTest(test)
+        popFit.append([fit, func])
+    popSorted = np.array(popFit)
+    popSorted[popSorted[:,0].argsort()]
+    return popSorted
+def GA(test):
+    depth = 4
+    popTree = initPopulation(depth)
+    popSorted = calculateGAFit(test, popTree)
+    return popSorted
     
 
 
@@ -234,7 +240,7 @@ if __name__ == '__main__':
     results, fitnessList, itrList = randomSearch(truthNode)
     
     # GA
-    # popTree = GA()
+    # popSorted = GA(truthNode)
     
     # Save Results as Pickle
     savePickle("randomFitnessList", fitnessList)
@@ -245,6 +251,11 @@ if __name__ == '__main__':
     # bestNode = openPickle("symbReg\\randomSearch\depth4\\randFuncObj")
     # fitnessList = openPickle("symbReg\\randomSearch\depth4\\randomFitnessList")
     # itrList = openPickle("symbReg\\randomSearch\depth4\\randomItrList")
+    
+    # bestNode = openPickle("randFuncObj")
+    # fitnessList = openPickle("randomFitnessList")
+    # itrList = openPickle("randomItrList")
+
 
     # #Plot Dot Curve
     # y_random = bestNode.calculateTree()
