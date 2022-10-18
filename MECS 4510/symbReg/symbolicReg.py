@@ -150,8 +150,8 @@ def randomSearch(truthNode):
     bestFunc = None
     itr_perf = []
     bestFitness = []
-    iter = int(1e6)
-    depth = 3
+    iter = int(1e5)
+    depth = 4
    
     for i in range(iter):
         functRand = randomFunc(depth)
@@ -169,7 +169,11 @@ def randomSearch(truthNode):
     return [bestFitness[-1], bestFunc], bestFitness, itr_perf
 
 # def initPopulation(depth, popsize = 1000):
+#     pool = mp.Pool(mp.cpu_count())
     
+#     popNode= [pool.apply(randomFunc, args=(depth, )) for i in popsize]
+#     node = pool.map(functTree, []
+#     return pop
 
 # def GA():
     
@@ -215,9 +219,9 @@ if __name__ == '__main__':
     savePickle("randFuncObj", results[1])
 
     # # Open Results
-    # bestNode = openPickle("randFuncObj")
-    # fitnessList = openPickle("randomFitnessList")
-    # itrList = openPickle("randomItrList")
+    # bestNode = openPickle("symbReg\\randomSearch\depth4\\randFuncObj")
+    # fitnessList = openPickle("symbReg\\randomSearch\depth4\\randomFitnessList")
+    # itrList = openPickle("symbReg\\randomSearch\depth4\\randomItrList")
 
     # #Plot Dot Curve
     # y_random = bestNode.calculateTree()
