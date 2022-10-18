@@ -160,7 +160,7 @@ def randomSearch(truthNode):
     bestFunc = None
     itr_perf = []
     bestFitness = []
-    iter = int(1e3)
+    iter = int(1e7)
     depth = 4
    
     for i in range(iter):
