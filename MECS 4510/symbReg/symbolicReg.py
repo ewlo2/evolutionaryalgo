@@ -168,6 +168,12 @@ def randomSearch(truthNode):
             bestFunc = tree           
     return [bestFitness[-1], bestFunc], bestFitness, itr_perf
 
+# def initPopulation(depth, popsize = 1000):
+    
+
+# def GA():
+    
+
 
 def savePickle(filename, list):
     with open(filename, "wb") as fp:
@@ -201,27 +207,27 @@ if __name__ == '__main__':
     truthNode = functTree(truth)
     truthTree = Funct(truthNode, truthNode)
     
-    # results, fitnessList, itrList = randomSearch(truthNode)
+    results, fitnessList, itrList = randomSearch(truthNode)
     
-    # # Save Results as Pickle
-    # savePickle("randomFitnessList", fitnessList)
-    # savePickle("randomItrList", itrList)
-    # savePickle("randFuncObj", results[1])
+    # Save Results as Pickle
+    savePickle("randomFitnessList", fitnessList)
+    savePickle("randomItrList", itrList)
+    savePickle("randFuncObj", results[1])
 
-    # Open Results
-    bestNode = openPickle("randFuncObj")
-    fitnessList = openPickle("randomFitnessList")
-    itrList = openPickle("randomItrList")
+    # # Open Results
+    # bestNode = openPickle("randFuncObj")
+    # fitnessList = openPickle("randomFitnessList")
+    # itrList = openPickle("randomItrList")
 
-    #Plot Dot Curve
-    y_random = bestNode.calculateTree()
-    y_truth = truthTree.calculateTree()
-    plotResult(y_random, y_truth, 'Random Search')
+    # #Plot Dot Curve
+    # y_random = bestNode.calculateTree()
+    # y_truth = truthTree.calculateTree()
+    # plotResult(y_random, y_truth, 'Random Search')
     
-    #Plot Learning Curve
-    plotLearning(fitnessList, itrList)
+    # #Plot Learning Curve
+    # plotLearning(fitnessList, itrList)
     
-    print (f'Random Search MAE: {bestNode.fitness_mae()}')
+    # print (f'Random Search MAE: {bestNode.fitness_mae()}')
     
     
     # pool.close()
