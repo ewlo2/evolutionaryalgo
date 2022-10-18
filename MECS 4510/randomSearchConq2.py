@@ -2,6 +2,8 @@ from cmath import log
 import math
 from random import shuffle
 import matplotlib.pyplot as plt
+import concurrent.futures
+
 def distance(a,b):
     # d = math.sqrt(math.pow(a[0]-a[1], 2) + math.pow(b[0]-b[1], 2))
     d = math.dist(a,b)
@@ -67,18 +69,13 @@ def plot_fit(data, n_itr):
     
     plt.show()
     
-def saveTxt(values):
-    with open("randomSr10e6.txt", "w") as output:
-        for row in values:
-            output.write(" ".join(str(row)) + "\n")
-            
 def main():
     
     # cities = [(1,4), (3, 5), (10,3), (5, 7)]
     cities = readTxt('tsp.txt')
     print(cities)
-    plot, plot_itr = random_search(cities, 1000)
-    saveTxt([plot, plot_itr])
+    plot, plot_itr = random_search(cities, 10000000)
+
     plot_fit(plot, plot_itr)
     
     
