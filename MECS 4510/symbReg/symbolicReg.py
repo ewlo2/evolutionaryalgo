@@ -39,7 +39,7 @@ class Node(object):
     
     
 class Funct(object):
-    def __init__(self, func, target):
+    def __init__(self, func, target = None):
         self.func = func
         self.target = target
         self.mae = None
@@ -98,15 +98,23 @@ class Funct(object):
                 if children[1]:
                     rightChild = self.calculate(children[1])
                     return self.operators(parent, leftChild, rightChild)
+        else:
+            return np.zeros(1000)
     def calculateTree(self):
         y = self.calculate(self.func)
         return y
 
+    
     def fitness_mae(self):
         test = np.array(self.calculateTree())
         tar = np.array(self.calculate(self.target))
         self.mae = np.mean(np.abs(tar-test))
         return self.mae
+    
+    def addTest(self, test):
+        if test:
+            self.test = test
+            self.fitness_mae()
             
 def checkFloat(str):
         try:
@@ -150,7 +158,7 @@ def randomSearch(truthNode):
     bestFunc = None
     itr_perf = []
     bestFitness = []
-    iter = int(1e5)
+    iter = int(1e7)
     depth = 4
    
     for i in range(iter):
@@ -168,14 +176,25 @@ def randomSearch(truthNode):
             bestFunc = tree           
     return [bestFitness[-1], bestFunc], bestFitness, itr_perf
 
-# def initPopulation(depth, popsize = 1000):
-#     pool = mp.Pool(mp.cpu_count())
-    
-#     popNode= [pool.apply(randomFunc, args=(depth, )) for i in popsize]
-#     node = pool.map(functTree, []
-#     return pop
+# def initPopulation(depth, popsize = 1000): 
+#     popFunc= [randomFunc(depth) for i in range(popsize)]
+#     nodeList = [functTree(node) for node in popFunc]
+#     tree = [Funct(x) for x in nodeList]
+#     return tree
 
-# def GA():
+# def calculateFit(test, pop):
+#     popFit = []
+#     popSorted = {}
+    
+#     for func in pop:
+#         fit = func.addTest(test)
+#         popSorted[fit] = func
+
+# def GA(test):
+#     depth = 4
+#     popTree = initPopulation(depth)
+    
+#     return popTree
     
 
 
@@ -211,7 +230,11 @@ if __name__ == '__main__':
     truthNode = functTree(truth)
     truthTree = Funct(truthNode, truthNode)
     
+    # Random Search
     results, fitnessList, itrList = randomSearch(truthNode)
+    
+    # GA
+    # popTree = GA()
     
     # Save Results as Pickle
     savePickle("randomFitnessList", fitnessList)
