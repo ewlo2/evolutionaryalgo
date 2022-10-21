@@ -358,7 +358,7 @@ def mutate(child, depth, pMutate = 0.3):
 
 def GA(test, popSize = 1000, selecTour = True ):
     depth = 4
-    n_itr = int(1e3)
+    n_itr = int(1e6)
     bestFunc = None
     itr_perf = []
     bestFitness = []
